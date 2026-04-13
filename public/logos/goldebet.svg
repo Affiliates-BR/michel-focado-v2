@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <rect width="120" height="120" rx="20" fill="#0d1117"/>
+  <text x="60" y="45" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18" fill="#ffd700">GOL DE</text>
+  <text x="60" y="80" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="30" fill="#22c55e">BET</text>
+  <circle cx="30" cy="60" r="8" fill="none" stroke="#ffd700" stroke-width="2"/>
+  <path d="M27 60 L33 60 M30 57 L30 63" stroke="#ffd700" stroke-width="1.5"/>
+</svg>
