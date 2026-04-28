@@ -4,32 +4,26 @@ const bettingHouses = [
   {
     name: "4Play",
     description: "Bonus especial para voce!",
-    logo: "/logos/4play.svg",
-    link: "#",
+    logo: "/logos/4play.png",
+    link: "https://go.aff.4play.bet.br/9p7hgs45?utm_source=affbrcmtfcfp",
   },
   {
     name: "Gol de Bet",
     description: "Aposte com seguranca!",
-    logo: "/logos/goldebet.svg",
-    link: "#",
+    logo: "/logos/goldebet.png",
+    link: "https://go.aff.goldebet.bet.br/3wxyd9w2?utm_source=affbrcmtfc1",
   },
   {
     name: "Vera Bet",
     description: "Jogue agora com bonus!",
-    logo: "/logos/verabet.svg",
-    link: "#",
+    logo: "/logos/verabet.png",
+    link: "https://go.aff.ana.partners/v88g8ncr?utm_source=affbrcmtfcvb",
   },
   {
     name: "bet.bet",
     description: "Cadastre-se e ganhe bonus!",
-    logo: "/logos/betbet.svg",
-    link: "#",
-  },
-  {
-    name: "Bet MGM",
-    description: "Grandes premios te esperam!",
-    logo: "/logos/betmgm.svg",
-    link: "#",
+    logo: "/logos/betbet.png",
+    link: "https://go.aff.bet.bet/ajam62yw?utm_source=affbrcmtfcbt",
   },
 ];
 
@@ -57,14 +51,14 @@ export default function Home() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-lg mx-auto px-4 py-8 flex flex-col items-center gap-6">
+      <div className="relative z-10 w-full max-w-lg mx-auto px-4 pt-[15vh] pb-8 md:py-8 flex flex-col items-center gap-3 md:gap-6">
         {/* Profile Header */}
         <div
           className="animate-fade-in-up flex flex-col items-center gap-3"
           style={{ animationDelay: "0.2s" }}
         >
           {/* Avatar with ring */}
-          <div className="avatar-ring">
+          <div className="avatar-ring hidden md:block">
             <div className="avatar-ring-inner">
               <Image
                 src="/avatar.jpg"
@@ -150,15 +144,15 @@ export default function Home() {
 
         {/* Disclaimer */}
         <p
-          className="animate-fade-in-up text-xs text-red-400/80 text-center font-medium"
+          className="animate-fade-in-up text-xs text-white text-center font-medium"
           style={{ animationDelay: "0.35s" }}
         >
-          Jogos de azar, nao sao solucoes financeiras!
+          Jogos de azar não são soluções financeiras. +18 Jogue com responsabilidade.
         </p>
 
         {/* WhatsApp CTA Card */}
         <a
-          href="#"
+          href="https://chat.whatsapp.com/CcKYAYwRiyk1O9zbsF0wkR?mode=gi_t"
           target="_blank"
           rel="noopener noreferrer"
           className="animate-fade-in-up card-whatsapp w-full"
@@ -176,10 +170,10 @@ export default function Home() {
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <h2 className="font-bold text-white text-base truncate">
+                <h2 className="font-bold text-white text-base leading-tight">
                   Grupo WhatsApp
                 </h2>
-                <p className="text-xs text-white/50 truncate">
+                <p className="text-xs text-white/50 leading-snug">
                   Entre no grupo exclusivo!
                 </p>
               </div>
@@ -224,10 +218,10 @@ export default function Home() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="font-bold text-white text-base truncate">
+                  <h2 className="font-bold text-white text-base leading-tight">
                     {house.name}
                   </h2>
-                  <p className="text-xs text-white/50 truncate">
+                  <p className="text-xs text-white/50 leading-snug">
                     {house.description}
                   </p>
                 </div>
