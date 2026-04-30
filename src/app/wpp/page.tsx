@@ -14,8 +14,7 @@ function trackEvent(name: string) {
   }
 }
 
-// TODO: substituir por link real do grupo
-const WHATSAPP_GROUP_URL = "#";
+const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/CcKYAYwRiyk1O9zbsF0wkR";
 
 export default function WhatsAppLanding() {
   return (

@@ -170,7 +170,7 @@ export default function Home() {
 
         {/* WhatsApp CTA Card */}
         <a
-          href="https://chat.whatsapp.com/CcKYAYwRiyk1O9zbsF0wkR?mode=gi_t"
+          href="https://chat.whatsapp.com/CcKYAYwRiyk1O9zbsF0wkR"
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackEvent("wpp_button")}
