@@ -1,4 +1,18 @@
+"use client";
+
 import Image from "next/image";
+
+declare global {
+  interface Window {
+    fbq?: (...args: unknown[]) => void;
+  }
+}
+
+function trackEvent(name: string) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") {
+    window.fbq("trackCustom", name);
+  }
+}
 
 const bettingHouses = [
   {
@@ -6,24 +20,28 @@ const bettingHouses = [
     description: "Bonus especial para voce!",
     logo: "/logos/4play.png",
     link: "https://go.aff.4play.bet.br/9p7hgs45?utm_source=affbrcmtfcfp",
+    event: "casa4play_button",
   },
   {
     name: "Gol de Bet",
     description: "Aposte com seguranca!",
     logo: "/logos/goldebet.png",
     link: "https://go.aff.goldebet.bet.br/3wxyd9w2?utm_source=affbrcmtfc1",
+    event: "casagoldebet_button",
   },
   {
     name: "Vera Bet",
     description: "Jogue agora com bonus!",
     logo: "/logos/verabet.png",
     link: "https://go.aff.ana.partners/v88g8ncr?utm_source=affbrcmtfcvb",
+    event: "casaverabet_button",
   },
   {
     name: "bet.bet",
     description: "Cadastre-se e ganhe bonus!",
     logo: "/logos/betbet.png",
     link: "https://go.aff.bet.bet/ajam62yw?utm_source=affbrcmtfcbt",
+    event: "casabetbet_button",
   },
 ];
 
@@ -155,6 +173,7 @@ export default function Home() {
           href="https://chat.whatsapp.com/CcKYAYwRiyk1O9zbsF0wkR?mode=gi_t"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackEvent("wpp_button")}
           className="animate-fade-in-up card-whatsapp w-full"
           style={{ animationDelay: "0.52s" }}
         >
@@ -203,6 +222,7 @@ export default function Home() {
             href={house.link}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackEvent(house.event)}
             className="animate-fade-in-up card-bet w-full"
             style={{ animationDelay: `${0.6 + index * 0.08}s` }}
           >
