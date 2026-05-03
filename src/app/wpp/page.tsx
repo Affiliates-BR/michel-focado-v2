@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect } from "react";
 
 declare global {
   interface Window {
@@ -20,6 +21,30 @@ function trackLead() {
 const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/CcKYAYwRiyk1O9zbsF0wkR";
 
 export default function WhatsAppLanding() {
+  useEffect(() => {
+    // Fire a custom event so we can build a Meta Custom Audience of users
+    // who specifically reached the /wpp landing (separate from the global
+    // PageView which fires on every route).
+    // The Pixel snippet in layout.tsx may still be loading on first paint —
+    // poll briefly until fbq is available, then fire once.
+    let cancelled = false;
+    let attempts = 0;
+    const tick = () => {
+      if (cancelled) return;
+      if (typeof window.fbq === "function") {
+        window.fbq("trackCustom", "wpp_pageview");
+        return;
+      }
+      if (attempts++ < 20) {
+        setTimeout(tick, 250);
+      }
+    };
+    tick();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-start">
       {/* Background Images */}
