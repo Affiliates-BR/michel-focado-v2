@@ -8,9 +8,12 @@ declare global {
   }
 }
 
-function trackEvent(name: string) {
+function trackLead() {
   if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    window.fbq("trackCustom", name);
+    // Standard Meta Pixel event — used for ad optimization, custom audiences, etc.
+    window.fbq("track", "Lead");
+    // Custom event preserved for granular reporting on this specific button.
+    window.fbq("trackCustom", "wpp_button");
   }
 }
 
@@ -118,7 +121,7 @@ export default function WhatsAppLanding() {
           href={WHATSAPP_GROUP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => trackEvent("wpp_button")}
+          onClick={trackLead}
           className="animate-fade-in-up card-whatsapp w-full"
           style={{ animationDelay: "0.6s" }}
         >
