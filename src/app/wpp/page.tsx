@@ -9,12 +9,32 @@ declare global {
   }
 }
 
+// localStorage key used to dedupe the standard 'Lead' Pixel event so it
+// fires at most once per browser. The custom 'wpp_button' event still
+// fires on every click for granular reporting.
+const LEAD_DEDUPE_KEY = "mf_wpp_lead_fired";
+
 function trackLead() {
-  if (typeof window !== "undefined" && typeof window.fbq === "function") {
-    // Standard Meta Pixel event — used for ad optimization, custom audiences, etc.
-    window.fbq("track", "Lead");
-    // Custom event preserved for granular reporting on this specific button.
-    window.fbq("trackCustom", "wpp_button");
+  if (typeof window === "undefined" || typeof window.fbq !== "function") return;
+
+  // Granular event: every click counts.
+  window.fbq("trackCustom", "wpp_button");
+
+  // Standard Lead: only the first click per person (per browser).
+  let alreadyFired = false;
+  try {
+    alreadyFired = window.localStorage.getItem(LEAD_DEDUPE_KEY) !== null;
+  } catch {
+    // localStorage unavailable (private mode, blocked) — proceed and fire.
+  }
+  if (alreadyFired) return;
+
+  window.fbq("track", "Lead");
+  try {
+    window.localStorage.setItem(LEAD_DEDUPE_KEY, String(Date.now()));
+  } catch {
+    // ignore — without storage we can't dedupe further; one extra Lead is
+    // a much smaller cost than missing the conversion signal entirely.
   }
 }
 
