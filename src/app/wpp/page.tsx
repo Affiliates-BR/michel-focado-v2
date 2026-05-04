@@ -38,7 +38,41 @@ function trackLead() {
   }
 }
 
-const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/CcKYAYwRiyk1O9zbsF0wkR";
+const WHATSAPP_INVITE_CODE = "CcKYAYwRiyk1O9zbsF0wkR";
+const WHATSAPP_GROUP_URL = `https://chat.whatsapp.com/${WHATSAPP_INVITE_CODE}`;
+const WHATSAPP_APP_URL = `whatsapp://chat?code=${WHATSAPP_INVITE_CODE}`;
+
+function isMobileUA(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function handleWhatsAppClick(e: React.MouseEvent<HTMLAnchorElement>) {
+  // Always track first — synchronous, runs before any navigation.
+  trackLead();
+
+  // Desktop: nothing fancy, the native <a href> takes over.
+  if (!isMobileUA()) return;
+
+  // Mobile: try opening the WhatsApp app directly via custom scheme. If the
+  // app is installed the OS hands off and we never come back to this page.
+  // If the app isn't installed (or the OS ignores the scheme), the page
+  // stays visible and after a short delay we fall back to the web URL,
+  // which is itself a universal link (so the OS gets a second chance).
+  e.preventDefault();
+
+  const start = Date.now();
+  window.location.href = WHATSAPP_APP_URL;
+
+  window.setTimeout(() => {
+    // If the page is hidden the app already took over — don't redirect.
+    if (document.hidden) return;
+    // Guard against the timer firing implausibly early (some browsers fire
+    // pending timers when returning to a backgrounded tab).
+    if (Date.now() - start < 900) return;
+    window.location.href = WHATSAPP_GROUP_URL;
+  }, 1200);
+}
 
 export default function WhatsAppLanding() {
   useEffect(() => {
@@ -166,7 +200,7 @@ export default function WhatsAppLanding() {
           href={WHATSAPP_GROUP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={trackLead}
+          onClick={handleWhatsAppClick}
           className="animate-fade-in-up card-whatsapp w-full"
           style={{ animationDelay: "0.6s" }}
         >
