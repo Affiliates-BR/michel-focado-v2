@@ -2,12 +2,7 @@
 
 import Image from "next/image";
 import { useEffect } from "react";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
+import { fireMetaEvent } from "@/lib/meta-pixel";
 
 // localStorage key used to dedupe the standard 'Lead' Pixel event so it
 // fires at most once per browser. The custom 'wpp_button' event still
@@ -15,10 +10,11 @@ declare global {
 const LEAD_DEDUPE_KEY = "mf_wpp_lead_fired";
 
 function trackLead() {
-  if (typeof window === "undefined" || typeof window.fbq !== "function") return;
+  if (typeof window === "undefined") return;
 
-  // Granular event: every click counts.
-  window.fbq("trackCustom", "wpp_button");
+  // Granular event: every click counts. Browser pixel only — keeps CAPI
+  // budget for the standard 'Lead' that drives optimization.
+  fireMetaEvent("trackCustom", "wpp_button", { capi: false });
 
   // Standard Lead: only the first click per person (per browser).
   let alreadyFired = false;
@@ -29,7 +25,10 @@ function trackLead() {
   }
   if (alreadyFired) return;
 
-  window.fbq("track", "Lead");
+  // Lead fires via both browser Pixel and Conversions API (server-side).
+  // Same event_id is used in both calls so Meta dedupes them.
+  fireMetaEvent("track", "Lead");
+
   try {
     window.localStorage.setItem(LEAD_DEDUPE_KEY, String(Date.now()));
   } catch {
@@ -78,15 +77,14 @@ export default function WhatsAppLanding() {
   useEffect(() => {
     // Fire a custom event so we can build a Meta Custom Audience of users
     // who specifically reached the /wpp landing (separate from the global
-    // PageView which fires on every route).
-    // The Pixel snippet in layout.tsx may still be loading on first paint —
-    // poll briefly until fbq is available, then fire once.
+    // PageView which fires on every route). Sent via CAPI as well so the
+    // audience still works for users with adblockers.
     let cancelled = false;
     let attempts = 0;
     const tick = () => {
       if (cancelled) return;
       if (typeof window.fbq === "function") {
-        window.fbq("trackCustom", "wpp_pageview");
+        fireMetaEvent("trackCustom", "wpp_pageview", { capi: true });
         return;
       }
       if (attempts++ < 20) {
